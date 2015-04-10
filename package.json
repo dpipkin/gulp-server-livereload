@@ -31,8 +31,8 @@
   "dependencies": {
     "connect": "~3.1.1",
     "connect-inject": "~0.3.2",
+    "glob-watcher": "^2.0.0",
     "gulp-util": "~2.2.19",
-    "node-watch": "~0.3.4",
     "node.extend": "~1.0.10",
     "open": "~0.0.5",
     "serve-index": "~1.1.4",

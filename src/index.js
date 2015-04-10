@@ -4,7 +4,7 @@ var through = require('through2');
   https = require('https'),
   inject = require('connect-inject'),
   connect = require('connect'),
-  watch = require('node-watch'),
+  watch = require('glob-watcher'),
   fs = require('fs'),
   serveIndex = require('serve-index'),
   serveStatic = require('serve-static'),
@@ -47,6 +47,7 @@ module.exports = function(options) {
     livereload: {
       enable: false,
       port: 35729,
+      pattern: ['./', '!node_modules'],
     },
 
     // Middleware: Directory listing
@@ -218,11 +219,17 @@ module.exports = function(options) {
     }));
 
     if (config.livereload.enable) {
-      watch(file.path, function(filename) {
-        gutil.log('Livereload: file changed: ' + filename);
+      var watcher = watch(config.livereload.pattern);
 
-        config.livereload.io.sockets.emit('reload');
+      watcher.on('change', function(evt) {
+        console.log('Something changed... ', evt);
       });
+
+      // watch(file.path, function(filename) {
+      //   gutil.log('Livereload: file changed: ' + filename);
+
+      //   config.livereload.io.sockets.emit('reload');
+      // });
     }
 
     this.push(file);
